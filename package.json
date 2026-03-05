@@ -86,9 +86,6 @@
     "vitest": "^4.0.18",
     "vitest-browser-react": "^2.0.5"
   },
-  "overrides": {
-    "eslint-plugin-jsdoc": "50.4.2"
-  },
   "release": {
     "branches": [
       "main"
