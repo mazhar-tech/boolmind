@@ -1,0 +1,53 @@
+---
+description: Reusable components and constants conventions for BoolMind AI
+alwaysApply: true
+---
+
+# Development Conventions
+
+## Reusable Components
+
+All UI components must be designed for reusability:
+
+- **Props over hardcoding**: Accept props for content, variants, and behavior. Avoid hardcoded strings or styles inside components.
+- **Composition**: Prefer composition (e.g. `children`, `render props`, slots) over rigid structures.
+- **Single responsibility**: Each component should do one thing well.
+- **TypeScript**: Export proper types for props. Use `React.ComponentProps`, `React.PropsWithChildren` where useful.
+
+```tsx
+// ✅ GOOD: Reusable, props-driven
+export const Card = ({ title, children, className }: CardProps) => (
+  <div className={cn('rounded-lg border p-4', className)}>
+    <h3>{title}</h3>
+    {children}
+  </div>
+);
+
+// ❌ BAD: Hardcoded content
+export const Card = () => (
+  <div><h3>My Card</h3><p>Fixed content</p></div>
+);
+```
+
+## Dummy Data in Constants
+
+All dummy data, mock content, placeholder text, and static config must live in `src/constants/`:
+
+- **Location**: `src/constants/` (group by feature, e.g. `home.ts`, `features.ts`).
+- **Re-export**: Use `src/constants/index.ts` to re-export from submodules.
+- **Imports**: Import from `@/constants` or `@/constants/home` (avoid inlining strings in components or pages).
+
+```tsx
+// ✅ GOOD
+import { HOME_CONTENT } from '@/constants';
+<p>{HOME_CONTENT.heading}</p>
+
+// ❌ BAD
+<p>Transforming Data into Insightful AI Solutions</p>
+```
+
+## File Organization
+
+- `src/constants/` — All dummy data and static content
+- `src/components/` — Reusable UI components (no dummy data inside)
+- `src/templates/` — Page layouts and compositions

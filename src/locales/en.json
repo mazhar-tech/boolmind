@@ -1,0 +1,1 @@
+{ "HomePage": { "meta_title": "Home", "meta_description": "Get started with your Next.js project.", "heading": "Welcome", "intro": "Get started with your Next.js project." }, "BaseTemplate": { "description": "Starter code for your Next.js project with Tailwind CSS", "footer_text": "© {year} {name}. Made with <author></author>." } }

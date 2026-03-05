@@ -1,0 +1,1 @@
+export { HowWeWorkSection } from './HowWeWorkSection';

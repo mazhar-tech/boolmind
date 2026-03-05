@@ -1,0 +1,440 @@
+@layer theme, base, clerk, components, utilities; /* Ensure Clerk is compatible with Tailwind CSS v4 */
+
+@import 'tailwindcss';
+
+@theme {
+  /* Body: Be Vietnam Pro (--font-body from next/font) */
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+
+  /* Container: 1440px max, centered */
+  --container-center: true;
+  --container-max-width: 90rem;
+
+  /* Navbar / Brand colors */
+  --color-brand: #ff5b35;
+  --color-nav-text: #a4a2c4;
+  --color-nav-muted: #7a7994;
+  --color-gray-50: #dbdaec;
+  --color-tabs-divider: #202044;
+  --color-gray-600: #3e3e62;
+}
+
+@layer utilities {
+  .font-title {
+    font-family: var(--font-title), ui-sans-serif, system-ui, sans-serif;
+  }
+  .font-tags {
+    font-family: var(--font-tags), ui-sans-serif, system-ui, sans-serif;
+  }
+}
+
+/* Custom faceted pointer cursor (#ff5b35) — 32x32 (browser limit). Override Tailwind cursor utilities so they don’t revert to system cursor. */
+:root {
+  --cursor-pointer: url('/cursors/pointer.svg') 3 12, pointer;
+  --cursor-pointer-on-brand: url('/cursors/pointer-white.svg') 3 12, pointer;
+}
+html,
+body,
+*,
+.cursor-pointer,
+.cursor-default,
+.cursor-auto {
+  cursor: var(--cursor-pointer) !important;
+}
+/* White cursor over brand-colored areas (buttons, CTAs) for contrast */
+.cursor-on-brand,
+.cursor-on-brand * {
+  cursor: var(--cursor-pointer-on-brand) !important;
+}
+/* Keep text cursor on inputs and editable areas */
+input:not([type='submit']):not([type='button']):not([type='image']),
+textarea,
+[contenteditable='true'] {
+  cursor: text !important;
+}
+
+/* Hide scrollbar, keep scroll behavior */
+html {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+
+/* Tabs horizontal scroll: show scrollbar when overflow */
+.tabs-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(122, 121, 148, 0.5) transparent;
+}
+.tabs-scroll::-webkit-scrollbar {
+  display: block;
+  height: 6px;
+}
+.tabs-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.tabs-scroll::-webkit-scrollbar-thumb {
+  background: rgba(122, 121, 148, 0.5);
+  border-radius: 9999px;
+}
+
+/* CTA button: colors flow 360° around border (1 point → full circle) */
+@property --gradient-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+.btn-cta-gradient-hover:hover {
+  --gradient-angle: 0deg;
+  border: 2.2px solid transparent;
+  background:
+    linear-gradient(#000008, #000008) padding-box,
+    conic-gradient(from var(--gradient-angle), #ff5b35, #ed2f2f, #dc04f8, #021896, #ff5b35) border-box;
+  animation: gradient-flow-circle 2.5s linear infinite;
+  color: white;
+}
+@keyframes gradient-flow-circle {
+  0% {
+    --gradient-angle: 0deg; /* start */
+  }
+  100% {
+    --gradient-angle: 360deg; /* full circle complete */
+  }
+}
+
+/* AI Assistant Input: Exactly like Get Started button */
+.ai-input-gradient {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(#0b0d34, #0b0d34) padding-box,
+    linear-gradient(225deg, #ff5b35 14%, #ed2f2f 40.38%, #dc04f8 60%, #021896 86%) border-box;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.ai-input-gradient:focus-within {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(#0b0d34, #0b0d34) padding-box,
+    conic-gradient(from var(--gradient-angle), #ff5b35, #ed2f2f, #dc04f8, #021896, #ff5b35) border-box;
+  animation: gradient-flow-circle 2.5s linear infinite;
+}
+
+/* AI button: same gradient flows continuously around rounded border */
+.ai-button-gradient-border {
+  --gradient-angle: 0deg;
+  display: inline-block;
+  width: 106px;
+  height: 102px;
+  border-radius: 50%;
+  border: 2.2px solid transparent;
+  background:
+    linear-gradient(#010424, #010424) padding-box,
+    conic-gradient(from var(--gradient-angle), #ff5b35, #ed2f2f, #dc04f8, #021896, #ff5b35) border-box;
+  animation: gradient-flow-circle 2.5s linear infinite;
+  box-sizing: content-box;
+}
+.ai-button-gradient-border > svg {
+  display: block;
+  border-radius: 50%;
+}
+
+/* Scheme card: paths draw smoothly from start to end (like writing) */
+@property --scheme-path-reveal {
+  syntax: '<percentage>';
+  initial-value: 0%;
+  inherits: false;
+}
+@keyframes scheme-path-draw {
+  0% {
+    --scheme-path-reveal: 0%;
+  }
+  100% {
+    --scheme-path-reveal: 100%;
+  }
+}
+.scheme-path-draw-ltr {
+  -webkit-mask-image: linear-gradient(to right, black var(--scheme-path-reveal), transparent var(--scheme-path-reveal));
+  mask-image: linear-gradient(to right, black var(--scheme-path-reveal), transparent var(--scheme-path-reveal));
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.scheme-path-draw-rtl {
+  -webkit-mask-image: linear-gradient(to left, black var(--scheme-path-reveal), transparent var(--scheme-path-reveal));
+  mask-image: linear-gradient(to left, black var(--scheme-path-reveal), transparent var(--scheme-path-reveal));
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.scheme-path-draw-ttb {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black var(--scheme-path-reveal),
+    transparent var(--scheme-path-reveal)
+  );
+  mask-image: linear-gradient(to bottom, black var(--scheme-path-reveal), transparent var(--scheme-path-reveal));
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* Case description: white progress line (left to right) */
+@keyframes case-progress-line {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+/* Case section: slide up from bottom on tab change (very smooth) */
+@keyframes slide-up-from-bottom {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-slide-up-from-bottom {
+  animation: slide-up-from-bottom 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Previous tab blurred in background during transition */
+.case-section-blur-back {
+  transition:
+    filter 0.4s ease-out,
+    opacity 0.4s ease-out;
+}
+.case-section-blur-back.visible {
+  filter: blur(2px);
+  opacity: 0.5;
+}
+
+/* Spline section: fade-in + slide-up when in view */
+@keyframes spline-section-enter {
+  from {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.spline-section-animate {
+  animation: spline-section-enter 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Spline section: rotate 90deg every 2s (full 360° in 8s) */
+@keyframes spline-rotate-90 {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(90deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.spline-rotate-every-2s {
+  animation: spline-rotate-90 8s linear infinite;
+  transform-origin: center center;
+}
+
+/* CTA section: background is animated and moves slowly */
+@keyframes cta-float-slow {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(6%, -4%) rotate(0.8deg);
+  }
+  66% {
+    transform: translate(-4%, 5%) rotate(-0.8deg);
+  }
+}
+
+/* Hero cards: top and bottom cards swipe toward center (arrows) */
+@keyframes hero-card-swipe-to-center-top {
+  from {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  to {
+    transform: translate(259px, 167px);
+    opacity: 1;
+  }
+}
+@keyframes hero-card-swipe-to-center-bottom {
+  from {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  to {
+    transform: translate(315px, -100px);
+    opacity: 1;
+  }
+}
+/* Center card exits right: moves right (like beam), shrinks; fades out as it moves so it hides fully */
+@keyframes hero-card-exit-right {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+    visibility: visible;
+  }
+  25% {
+    transform: translate(80px, 0) scale(0.8);
+    opacity: 0.6;
+    visibility: visible;
+  }
+  50% {
+    transform: translate(160px, 0) scale(0.55);
+    opacity: 0.2;
+    visibility: visible;
+  }
+  75% {
+    transform: translate(240px, 0) scale(0.4);
+    opacity: 0.05;
+    visibility: visible;
+  }
+  100% {
+    transform: translate(320px, 0) scale(0.3);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+/* Recycled card: slides in smoothly from left to its slot */
+@keyframes hero-card-enter-from-left {
+  from {
+    transform: translate(-120px, 0);
+    opacity: 1;
+  }
+  to {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+}
+/* Loop fix: card that was at center goes left → slot → center (no jump) */
+@keyframes hero-card-enter-from-left-then-to-center-top {
+  0% {
+    transform: translate(-120px, 0);
+    opacity: 1;
+  }
+  38% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(259px, 167px);
+    opacity: 1;
+  }
+}
+@keyframes hero-card-enter-from-left-then-to-center-bottom {
+  0% {
+    transform: translate(-120px, 0);
+    opacity: 1;
+  }
+  38% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(315px, -100px);
+    opacity: 1;
+  }
+}
+/* Loop fix: center card fades in then exits (no pop when cycle restarts); fades out as it moves */
+@keyframes hero-card-exit-right-from-hidden {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0;
+    visibility: visible;
+  }
+  12% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+    visibility: visible;
+  }
+  35% {
+    transform: translate(100px, 0) scale(0.75);
+    opacity: 0.5;
+    visibility: visible;
+  }
+  60% {
+    transform: translate(200px, 0) scale(0.5);
+    opacity: 0.15;
+    visibility: visible;
+  }
+  100% {
+    transform: translate(320px, 0) scale(0.3);
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.hero-card-animate-swipe-top {
+  animation: hero-card-swipe-to-center-top 1.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+.hero-card-animate-swipe-bottom {
+  animation: hero-card-swipe-to-center-bottom 1.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+.hero-card-animate-center {
+  animation: hero-card-fade-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 0;
+}
+.hero-card-exit-right {
+  animation: hero-card-exit-right 1.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+.hero-card-exit-right-from-hidden {
+  animation: hero-card-exit-right-from-hidden 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+.hero-scheme-card-exit-right {
+  animation: hero-card-exit-right 1.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+.hero-scheme-card-enter-from-left {
+  animation: hero-scheme-card-enter-from-left 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+.hero-card-reset {
+  transform: none;
+  opacity: 1;
+  visibility: visible;
+}
+.hero-card-enter-from-left {
+  animation: hero-card-enter-from-left 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  visibility: visible;
+}
+.hero-card-enter-from-left-then-to-center-top {
+  animation: hero-card-enter-from-left-then-to-center-top 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+.hero-card-enter-from-left-then-to-center-bottom {
+  animation: hero-card-enter-from-left-then-to-center-bottom 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+@keyframes hero-card-fade-in {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes hero-scheme-card-enter-from-left {
+  from {
+    transform: translateX(-80%);
+    opacity: 0.7;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
