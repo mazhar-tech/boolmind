@@ -205,20 +205,33 @@ export const Hero = ({ hideAiButton = false }: { hideAiButton?: boolean }) => {
             </div>
           </div>
         </div>
-        {/* Right side: one SchemeCard; fixed size 238×267 (scaled from 475×533); 2xl slightly larger */}
+        {/* Right side: two SchemeCards for smooth transition; fixed size 238×267 (scaled from 475×533); 2xl slightly larger */}
         <div className="absolute right-4 z-20 hidden items-center justify-center lg:top-[400px] lg:right-8 lg:flex 2xl:right-36">
-          <div
-            className={`relative h-[267px] w-[238px] shrink-0 overflow-hidden 2xl:h-[320px] 2xl:w-[285px] ${isSchemeExiting ? 'hero-scheme-card-exit-right' : ''}`}
-            style={{ transformOrigin: 'top right' }}
-          >
-            <div className="absolute top-0 right-0 origin-top-right scale-[0.5] 2xl:scale-[0.6]">
-              {displayCenterCardId === 'healthcare' && (
+          <div className="relative h-[267px] w-[238px] shrink-0 2xl:h-[320px] 2xl:w-[285px]">
+            {/* Exiting card */}
+            {isSchemeExiting && nextCenterCardId && (
+              <div
+                className="hero-scheme-card-exit-right absolute top-0 right-0 origin-top-right scale-[0.5] 2xl:scale-[0.6]"
+                style={{ transformOrigin: 'top right' }}
+                aria-hidden
+              >
+                {displayCenterCardId === 'healthcare' && <SchemeCard className="origin-top" />}
+                {displayCenterCardId === 'banking' && <SchemeCard2 className="origin-top" />}
+                {displayCenterCardId === 'retail' && <SchemeCard3 className="origin-top" />}
+              </div>
+            )}
+            {/* Current or entering card */}
+            <div
+              className={`absolute top-0 right-0 origin-top-right scale-[0.5] 2xl:scale-[0.6] ${isSchemeExiting && nextCenterCardId ? 'hero-scheme-card-enter-from-left z-10' : ''}`}
+              style={{ transformOrigin: 'top right' }}
+            >
+              {(isSchemeExiting && nextCenterCardId ? nextCenterCardId : displayCenterCardId) === 'healthcare' && (
                 <SchemeCard className="origin-top" />
               )}
-              {displayCenterCardId === 'banking' && (
+              {(isSchemeExiting && nextCenterCardId ? nextCenterCardId : displayCenterCardId) === 'banking' && (
                 <SchemeCard2 className="origin-top" />
               )}
-              {displayCenterCardId === 'retail' && (
+              {(isSchemeExiting && nextCenterCardId ? nextCenterCardId : displayCenterCardId) === 'retail' && (
                 <SchemeCard3 className="origin-top" />
               )}
             </div>

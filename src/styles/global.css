@@ -403,10 +403,10 @@ html::-webkit-scrollbar {
   animation: hero-card-exit-right-from-hidden 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 .hero-scheme-card-exit-right {
-  animation: hero-card-exit-right 1.25s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: hero-card-exit-right 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 .hero-scheme-card-enter-from-left {
-  animation: hero-scheme-card-enter-from-left 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: hero-scheme-card-enter-from-left 1.8s cubic-bezier(0.34, 1, 0.64, 1) forwards;
 }
 .hero-card-reset {
   transform: none;
@@ -430,11 +430,11 @@ html::-webkit-scrollbar {
 }
 @keyframes hero-scheme-card-enter-from-left {
   from {
-    transform: translateX(-80%);
-    opacity: 0.7;
+    transform: translateX(-1000px) scale(0.1);
+    opacity: 0;
   }
   to {
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
     opacity: 1;
   }
 }
